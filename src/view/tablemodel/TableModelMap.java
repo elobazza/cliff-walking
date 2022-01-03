@@ -27,7 +27,7 @@ public class TableModelMap extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return this.controller.getSimulationMap().getValueAt(rowIndex, columnIndex);
+        return this.controller.getSimulationMap().getMap()[rowIndex][columnIndex];
     }
     
 }

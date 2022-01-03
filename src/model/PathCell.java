@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import javax.swing.ImageIcon;
 
 /**
@@ -12,6 +13,7 @@ public class PathCell {
     private int y;
     private int type;
     
+    private Color color;
     private ImageIcon icon;
    
     private AgentWalker agentWalker;
@@ -67,5 +69,14 @@ public class PathCell {
     public boolean isFree() {
         return this.agentWalker == null;
     }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+ 
     
 }

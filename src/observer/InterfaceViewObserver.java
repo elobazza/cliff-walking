@@ -12,5 +12,5 @@ public interface InterfaceViewObserver {
     
     public void updateTableModel(TableModelMap tableModelMap);
     
-    public void updateShowException(Exception exception);
+    public void updateShowException(Boolean exception);
 }
