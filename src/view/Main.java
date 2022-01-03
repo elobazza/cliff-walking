@@ -1,11 +1,17 @@
 package view;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerSimulation;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -18,7 +24,15 @@ public class Main extends javax.swing.JFrame {
     private ControllerSimulation controller;
 
     public Main() {
+        try {
+            UIManager.setLookAndFeel( new FlatLightLaf());
+        } catch( Exception ex ) {
+            System.err.println("Failed to initialize LaF");
+        }
+        
         initComponents();
+        
+        this.getContentPane().setBackground(Color.white);
         this.controller = ControllerSimulation.getInstance();
         this.setFileChooserOptions();
     }
