@@ -194,29 +194,41 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
     }// </editor-fold>//GEN-END:initComponents
 
     private void btStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStopActionPerformed
-        // TODO add your handling code here:
+        ControllerSimulation.getInstance().setStart(false);
+        
+        btPause.setEnabled(false);
+        btStop.setEnabled(false);
+        btPlay.setEnabled(true);
     }//GEN-LAST:event_btStopActionPerformed
 
     private void btPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPlayActionPerformed
-//        if( this.tfLearningRate.getText().equals("") ||
-//            this.tfDiscountFactor.getText().equals("") ||
-//            this.tfEpsilon.getText().equals("") ||
-//            this.tfDecay.getText().equals("")) {
-//            
-//            JOptionPane.showMessageDialog(this, "Please, enter the values! :D");
-//        } 
-//        else {
-//            ControllerSimulation.getInstance().setLearningRate(Double.parseDouble(this.tfLearningRate.getText()));
-//            ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
-//            ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
-//            ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
-//            
-//        }
-            ControllerSimulation.getInstance().play();
+        if( this.tfLearningRate.getText().equals("") ||
+            this.tfDiscountFactor.getText().equals("") ||
+            this.tfEpsilon.getText().equals("") ||
+            this.tfDecay.getText().equals("")) {
+            
+            JOptionPane.showMessageDialog(this, "Please, enter the values! :D");
+        } 
+        else {
+            ControllerSimulation.getInstance().setLearningRate(Double.parseDouble(this.tfLearningRate.getText()));
+            ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
+            ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
+            ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
+            
+            btPause.setEnabled(true);
+            btStop.setEnabled(true);
+            btPlay.setEnabled(false);
+            
+//            ControllerSimulation.getInstance().play();
+        }
     }//GEN-LAST:event_btPlayActionPerformed
 
     private void btPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPauseActionPerformed
-        // TODO add your handling code here:
+        ControllerSimulation.getInstance().setStart(false);
+        
+        btPause.setEnabled(false);
+        btStop.setEnabled(false);
+        btPlay.setEnabled(true);
     }//GEN-LAST:event_btPauseActionPerformed
 
     @Override

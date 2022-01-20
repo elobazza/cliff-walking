@@ -30,11 +30,14 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     private double discountFactor;
     private double epsilon;
     private double epsilonDecay;
+    
+    private int episode;
 
     public ControllerSimulation() {
         this.simulationMap = new SimulationMap();
         this.agentWalker   = new AgentWalker();
         this.observers     = new ArrayList<>();
+        this.episode = 0;
     }
     
     public static ControllerSimulation getInstance() {
@@ -182,13 +185,55 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     }
     
     public void play() {
-        PathCell atual = this.getAgentWalker().getPathCell();
-        PathCell prox  = this.getAgentWalker().goUp();
+        while(isStart()) {
+            
+            this.newEpisode();
+            
+            this.chooseAnAction();
+            
+            this.executeAction();
+            
+            notifyTableModelChanged();
+            
+            this.updateQTable();
+            
+            if(this.isEndEpisode()) {
+                this.resetEpisode();
+                notifyTableModelChanged();
+            }
+            
+        }
         
-        this.getSimulationMap().getMap()[prox.getX()][prox.getY()].setAgentWalker(agentWalker);
-        this.getSimulationMap().getMap()[atual.getX()][atual.getY()].setAgentWalker(null);
+//        PathCell atual = this.getAgentWalker().getPathCell();
+//        PathCell prox  = this.getAgentWalker().goUp();
+//        
+//        this.getSimulationMap().getMap()[prox.getX()][prox.getY()].setAgentWalker(agentWalker);
+//        this.getSimulationMap().getMap()[atual.getX()][atual.getY()].setAgentWalker(null);
                 
-        notifyTableModelChanged();
+    }
+    
+    public void newEpisode() {
+        this.episode++;
+    }
+    
+    public void chooseAnAction() {
+        
+    }
+    
+    public void executeAction() {
+        
+    }
+    
+    public void updateQTable() {
+        
+    }
+    
+    public boolean isEndEpisode() {
+        return getAgentWalker().getPathCell().getType() == 2 && getAgentWalker().getPathCell().getType() == 0;
+    }
+    
+    public void resetEpisode() {
+        
     }
     
      public void notifyTableModel(TableModelMap tableModelMap) {
