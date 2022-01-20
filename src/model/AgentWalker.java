@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Objects;
 import javax.swing.ImageIcon;
 
 
@@ -12,7 +13,9 @@ public class AgentWalker {
     private PathCell pathCell;
     private ImageIcon icon;
 
-    public AgentWalker() {}
+    public AgentWalker() {
+        this.icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/walker.png")));;
+    }
 
     public PathCell getPathCell() {
         return pathCell;

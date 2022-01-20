@@ -24,6 +24,7 @@ public class PathCell {
         this.x = x;
         this.y = y;
         this.type = type;
+        
     }
 
     public int getX() {

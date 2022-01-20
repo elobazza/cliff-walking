@@ -2,6 +2,8 @@ package view.tablemodel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Objects;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import model.PathCell;
@@ -20,24 +22,37 @@ public class TableCellRender extends DefaultTableCellRenderer {
             switch(pathCell.getType()) {
 
                 case 0: {
-                    Color cor = new Color(0, 0, 250); // BLUE
-                    super.setBackground(cor);
+                    ImageIcon imagem = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/cliff.png")));
+                    super.setIcon(imagem);
                     break;
+//                    Color cor = new Color(0, 0, 250); // BLUE
+//                    super.setBackground(cor);
+//                    break;
                 }
                 case 1: {
-                    Color cor = new Color(250, 0, 0); // RED
-                    super.setBackground(cor);
+                    ImageIcon imagem = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/initial.png")));
+                    
+                    super.setIcon(imagem);
                     break;
+//                    Color cor = new Color(250, 0, 0); // RED
+//                    super.setBackground(cor);
+//                    break;
                 }
                 case 2: {
-                    Color cor = new Color(0, 128, 0); // GREEN
-                    super.setBackground(cor);
+                    ImageIcon imagem = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/final.png")));
+                    super.setIcon(imagem);
                     break;
+//                    Color cor = new Color(0, 128, 0); // GREEN
+//                    super.setBackground(cor);
+//                    break;
                 }
                 case 3: {
-                    Color cor = new Color(128, 128, 128); // GRAY
-                    super.setBackground(cor);
+                    ImageIcon imagem = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/normal.png")));
+                    super.setIcon(imagem);
                     break;
+//                    Color cor = new Color(128, 128, 128); // GRAY
+//                    super.setBackground(cor);
+//                    break;
                 }
 //                default : {
 //                    Color cor = new Color(65, 105, 225);
@@ -46,9 +61,11 @@ public class TableCellRender extends DefaultTableCellRenderer {
 //                }
             }
 
-//            if(!pathCell.isFree()) {
-//
-//            }
+            if(!pathCell.isFree()) {
+//                Color cor = new Color(128, 128, 128); // GRAY
+//                super.setBackground(cor);
+                super.setIcon(pathCell.getAgentWalker().getIcon());  
+            }
             
         }
         

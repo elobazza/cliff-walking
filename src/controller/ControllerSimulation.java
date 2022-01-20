@@ -85,9 +85,12 @@ public class ControllerSimulation implements InterfaceControllerObserved {
             for (int y = 0; y < colunas; y++) {
                 int type = Integer.parseInt(listTypes[y]);
                 map[x][y] = new PathCell(x, y, type);
+                if(type == 1) {
+                    map[x][y].setAgentWalker(agentWalker);
+                }
             }
         }
-        
+                
         this.simulationMap.setRows(linhas);
         this.simulationMap.setColumns(colunas);
         this.simulationMap.setMap(map);

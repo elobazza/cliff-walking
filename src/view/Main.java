@@ -1,6 +1,5 @@
 package view;
 
-import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerSimulation;
 import java.awt.Color;
 import java.io.File;
@@ -21,11 +20,11 @@ public class Main extends javax.swing.JFrame {
     private ControllerSimulation controller;
 
     public Main() {
-        try {
-            UIManager.setLookAndFeel( new FlatLightLaf());
-        } catch( Exception ex ) {
-            System.err.println("Failed to initialize LaF");
-        }
+//        try {
+//            UIManager.setLookAndFeel( new FlatLightLaf());
+//        } catch( Exception ex ) {
+//            System.err.println("Failed to initialize LaF");
+//        }
         
         initComponents();
         
