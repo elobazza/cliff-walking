@@ -33,8 +33,8 @@ public class AgentWalker {
         this.icon = icon;
     }
     
-    public void goUp() {
-        
+    public PathCell goUp() {
+        return this.getPathCell().getPathUp();
     }
     
     public void goDown() {

@@ -2,6 +2,7 @@ package view;
 
 import controller.ControllerSimulation;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import observer.InterfaceViewObserver;
 import view.tablemodel.TableModelMap;
 import view.tablemodel.TableCellRender;
@@ -17,11 +18,12 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
     public Simulation(ControllerSimulation controller) {
         initComponents();
         
-//        this.getContentPane().setBackground(Color.white);
-        
         this.updateTableModel(new TableModelMap(controller));
         this.controller = controller;
         this.controller.addObserver(this);
+        
+        this.btPause.setEnabled(false);
+        this.btStop.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -196,7 +198,21 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
     }//GEN-LAST:event_btStopActionPerformed
 
     private void btPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPlayActionPerformed
-        // TODO add your handling code here:
+//        if( this.tfLearningRate.getText().equals("") ||
+//            this.tfDiscountFactor.getText().equals("") ||
+//            this.tfEpsilon.getText().equals("") ||
+//            this.tfDecay.getText().equals("")) {
+//            
+//            JOptionPane.showMessageDialog(this, "Please, enter the values! :D");
+//        } 
+//        else {
+//            ControllerSimulation.getInstance().setLearningRate(Double.parseDouble(this.tfLearningRate.getText()));
+//            ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
+//            ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
+//            ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
+//            
+//        }
+            ControllerSimulation.getInstance().play();
     }//GEN-LAST:event_btPlayActionPerformed
 
     private void btPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPauseActionPerformed

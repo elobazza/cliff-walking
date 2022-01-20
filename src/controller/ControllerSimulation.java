@@ -25,6 +25,11 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     private File arquivo;
     private final ArrayList<InterfaceViewObserver> observers;
     private static ControllerSimulation instance = null;
+    
+    private double learningRate;
+    private double discountFactor;
+    private double epsilon;
+    private double epsilonDecay;
 
     public ControllerSimulation() {
         this.simulationMap = new SimulationMap();
@@ -70,7 +75,47 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     public void setStart(boolean start) {
         this.start = start;
     }
-        
+
+    public File getArquivo() {
+        return arquivo;
+    }
+
+    public void setArquivo(File arquivo) {
+        this.arquivo = arquivo;
+    }
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
+
+    public double getDiscountFactor() {
+        return discountFactor;
+    }
+
+    public void setDiscountFactor(double discountFactor) {
+        this.discountFactor = discountFactor;
+    }
+
+    public double getEpsilon() {
+        return epsilon;
+    }
+
+    public void setEpsilon(double epsilon) {
+        this.epsilon = epsilon;
+    }
+
+    public double getEpsilonDecay() {
+        return epsilonDecay;
+    }
+
+    public void setEpsilonDecay(double epsilonDecay) {
+        this.epsilonDecay = epsilonDecay;
+    }
+            
     public void loadSimulation(File arquivo) throws IOException {
        BufferedReader in = new BufferedReader(new FileReader(arquivo));
         this.arquivo = arquivo;
@@ -87,6 +132,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
                 map[x][y] = new PathCell(x, y, type);
                 if(type == 1) {
                     map[x][y].setAgentWalker(agentWalker);
+                    map[x][y].getAgentWalker().setPathCell(map[x][y]);
                 }
             }
         }
@@ -94,6 +140,55 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         this.simulationMap.setRows(linhas);
         this.simulationMap.setColumns(colunas);
         this.simulationMap.setMap(map);
+        
+        this.configNeighborhood();
+    }
+    
+    public void configNeighborhood() {
+        PathCell[][] map = this.getSimulationMap().getMap();
+        
+        for (int x = 0; x < getSimulationMap().getRows(); x++) {
+            for (int y = 0; y < getSimulationMap().getColumns(); y++) {
+                this.addNeighborhood(map[x][y]);
+            }
+        }
+    }
+    
+    private void addNeighborhood(PathCell pathCell) {
+        int linha  = pathCell.getX();
+        int coluna = pathCell.getY();
+        
+        PathCell[][] map = getSimulationMap().getMap();
+
+        if (verifyIndex(linha, coluna - 1)) {
+            pathCell.setPathLeft(map[linha][coluna - 1]);
+        }
+
+        if (verifyIndex(linha, coluna + 1)) {
+            pathCell.setPathRight(map[linha][coluna + 1]);
+        }
+
+        if (verifyIndex(linha + 1, coluna)) {
+            pathCell.setPathDown(map[linha + 1][coluna]);
+        }
+
+        if (verifyIndex(linha - 1, coluna)) {
+            pathCell.setPathUp(map[linha - 1][coluna]);
+        }        
+    }
+
+    private boolean verifyIndex(int x, int y) {
+        return (x >= 0 && x < getSimulationMap().getMap().length) && (y >= 0 && y < getSimulationMap().getMap()[0].length);
+    }
+    
+    public void play() {
+        PathCell atual = this.getAgentWalker().getPathCell();
+        PathCell prox  = this.getAgentWalker().goUp();
+        
+        this.getSimulationMap().getMap()[prox.getX()][prox.getY()].setAgentWalker(agentWalker);
+        this.getSimulationMap().getMap()[atual.getX()][atual.getY()].setAgentWalker(null);
+                
+        notifyTableModelChanged();
     }
     
      public void notifyTableModel(TableModelMap tableModelMap) {

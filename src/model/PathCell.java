@@ -17,14 +17,18 @@ public class PathCell {
     private ImageIcon icon;
    
     private AgentWalker agentWalker;
+    
+    private PathCell pathLeft;
+    private PathCell pathRight;
+    private PathCell pathUp;
+    private PathCell pathDown;
 
     public PathCell() {}
 
     public PathCell(int x, int y, int type) {
         this.x = x;
         this.y = y;
-        this.type = type;
-        
+        this.type = type;   
     }
 
     public int getX() {
@@ -78,6 +82,37 @@ public class PathCell {
     public void setColor(Color color) {
         this.color = color;
     }
- 
+
+    public PathCell getPathLeft() {
+        return pathLeft;
+    }
+
+    public void setPathLeft(PathCell pathLeft) {
+        this.pathLeft = pathLeft;
+    }
+
+    public PathCell getPathRight() {
+        return pathRight;
+    }
+
+    public void setPathRight(PathCell pathRight) {
+        this.pathRight = pathRight;
+    }
+
+    public PathCell getPathUp() {
+        return pathUp;
+    }
+
+    public void setPathUp(PathCell pathUp) {
+        this.pathUp = pathUp;
+    }
+
+    public PathCell getPathDown() {
+        return pathDown;
+    }
+
+    public void setPathDown(PathCell pathDown) {
+        this.pathDown = pathDown;
+    }
     
 }
