@@ -10,6 +10,7 @@ public class SimulationMap {
     private int columns;
     
     private PathCell[][] map;
+    private PathCell initial;
 
     public SimulationMap() {}
     
@@ -45,5 +46,13 @@ public class SimulationMap {
     public int getValueAt(int row, int column) {
         PathCell pathCell =  map[row][column];
         return pathCell.getType();
+    }
+
+    public PathCell getInitial() {
+        return initial;
+    }
+
+    public void setInitial(PathCell initial) {
+        this.initial = initial;
     }
 }

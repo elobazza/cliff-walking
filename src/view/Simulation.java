@@ -209,17 +209,27 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
             
             JOptionPane.showMessageDialog(this, "Please, enter the values! :D");
         } 
+        else if ( Double.parseDouble(this.tfLearningRate.getText()) >= 0 && Double.parseDouble(this.tfLearningRate.getText()) <= 1 &&
+                  Double.parseDouble(this.tfDiscountFactor.getText()) >= 0 && Double.parseDouble(this.tfDiscountFactor.getText()) <= 1 &&
+                  Double.parseDouble(this.tfEpsilon.getText()) >= 0 && Double.parseDouble(this.tfEpsilon.getText()) <= 1 &&
+                  Double.parseDouble(this.tfDecay.getText()) >= 0 && Double.parseDouble(this.tfDecay.getText()) <= 1) {
+            
+                    ControllerSimulation.getInstance().setLearningRate(Double.parseDouble(this.tfLearningRate.getText()));
+                    ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
+                    ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
+                    ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
+
+                    btPause.setEnabled(true);
+                    btStop.setEnabled(true);
+                    btPlay.setEnabled(false);
+                    
+                    ControllerSimulation.getInstance().setLearningRate(Double.parseDouble(this.tfLearningRate.getText()));
+                    ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
+                    ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
+                    ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
+        }
         else {
-            ControllerSimulation.getInstance().setLearningRate(Double.parseDouble(this.tfLearningRate.getText()));
-            ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
-            ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
-            ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
-            
-            btPause.setEnabled(true);
-            btStop.setEnabled(true);
-            btPlay.setEnabled(false);
-            
-//            ControllerSimulation.getInstance().play();
+            JOptionPane.showMessageDialog(this, "Values must be between 0 and 1!");
         }
     }//GEN-LAST:event_btPlayActionPerformed
 

@@ -33,6 +33,8 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     
     private int episode;
 
+    private double[][] qTable;
+    
     public ControllerSimulation() {
         this.simulationMap = new SimulationMap();
         this.agentWalker   = new AgentWalker();
@@ -127,6 +129,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         int colunas = Integer.parseInt(in.readLine());
         
         PathCell[][] map = new PathCell[linhas][colunas];
+        PathCell initial = null;
         
         for (int x = 0; x < linhas; x++) {
             String[] listTypes = in.readLine().split("\t");
@@ -136,6 +139,8 @@ public class ControllerSimulation implements InterfaceControllerObserved {
                 if(type == 1) {
                     map[x][y].setAgentWalker(agentWalker);
                     map[x][y].getAgentWalker().setPathCell(map[x][y]);
+                    
+                    initial = map[x][y];
                 }
             }
         }
@@ -143,6 +148,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         this.simulationMap.setRows(linhas);
         this.simulationMap.setColumns(colunas);
         this.simulationMap.setMap(map);
+        this.simulationMap.setInitial(initial);
         
         this.configNeighborhood();
     }
@@ -195,6 +201,8 @@ public class ControllerSimulation implements InterfaceControllerObserved {
             
             notifyTableModelChanged();
             
+            this.learn();
+            
             this.updateQTable();
             
             if(this.isEndEpisode()) {
@@ -224,6 +232,21 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         
     }
     
+    public void learn() {
+        
+    }
+    
+    public int getReward() {
+        switch(this.getAgentWalker().getPathCell().getType()) {
+            case 0: 
+                return -100;
+            case 1: case 2: case 3:
+                return -1;
+        }
+        
+        return 0;
+    }
+    
     public void updateQTable() {
         
     }
@@ -233,7 +256,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     }
     
     public void resetEpisode() {
-        
+        this.getAgentWalker().setPathCell(this.getSimulationMap().getInitial());
     }
     
      public void notifyTableModel(TableModelMap tableModelMap) {
