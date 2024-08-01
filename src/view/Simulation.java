@@ -1,7 +1,6 @@
 package view;
 
 import controller.ControllerSimulation;
-import java.awt.Color;
 import javax.swing.JOptionPane;
 import observer.InterfaceViewObserver;
 import view.tablemodel.TableModelMap;
@@ -227,6 +226,10 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
                     ControllerSimulation.getInstance().setDiscountFactor(Double.parseDouble(this.tfDiscountFactor.getText()));
                     ControllerSimulation.getInstance().setEpsilon(Double.parseDouble(this.tfEpsilon.getText()));
                     ControllerSimulation.getInstance().setEpsilonDecay(Double.parseDouble(this.tfDecay.getText()));
+                    
+                    ControllerSimulation.getInstance().play();
+                
+        
         }
         else {
             JOptionPane.showMessageDialog(this, "Values must be between 0 and 1!");

@@ -14,7 +14,7 @@ public class AgentWalker {
     private ImageIcon icon;
 
     public AgentWalker() {
-        this.icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/walker.png")));;
+        this.icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/img/walker.png")));
     }
 
     public PathCell getPathCell() {
@@ -37,16 +37,16 @@ public class AgentWalker {
         return this.getPathCell().getPathUp();
     }
     
-    public void goDown() {
-        
+    public PathCell goDown() {
+        return this.getPathCell().getPathDown();
     }
     
-    public void goRight() {
-        
+    public PathCell goRight() {
+        return this.getPathCell().getPathRight();
     }
     
-    public void goLeft() {
-        
+    public PathCell goLeft() {
+        return this.getPathCell().getPathLeft();
     }
     
 }

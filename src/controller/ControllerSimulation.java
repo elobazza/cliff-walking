@@ -5,6 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import model.AgentWalker;
 import model.PathCell;
 import model.SimulationMap;
@@ -191,50 +197,63 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     }
     
     public void play() {
-        while(isStart()) {
-            
-            this.newEpisode();
-            
-            this.chooseAnAction();
-            
-            this.executeAction();
-            
-            notifyTableModelChanged();
-            
-            this.learn();
-            
-            this.updateQTable();
-            
-            if(this.isEndEpisode()) {
-                this.resetEpisode();
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                while(isStart()) {
+                    PathCell prox = chooseAnAction();
+                    executeAction(prox);
+                    publish(); 
+                }
+                return null;
+            }
+
+            @Override
+            protected void process(List<Void> chunks) {
                 notifyTableModelChanged();
             }
-            
-        }
-        
-//        PathCell atual = this.getAgentWalker().getPathCell();
-//        PathCell prox  = this.getAgentWalker().goUp();
-//        
-//        this.getSimulationMap().getMap()[prox.getX()][prox.getY()].setAgentWalker(agentWalker);
-//        this.getSimulationMap().getMap()[atual.getX()][atual.getY()].setAgentWalker(null);
-                
+        };
+
+        worker.execute();         
     }
     
     public void newEpisode() {
         this.episode++;
     }
     
-    public void chooseAnAction() {
-        
+    public PathCell chooseAnAction() {
+        Random random = new Random();
+        int direction = random.nextInt(4); 
+
+        switch (direction) {
+            case 0:
+                return this.getAgentWalker().goUp();
+            case 1:
+                return this.getAgentWalker().goDown();
+            case 2:
+                return this.getAgentWalker().goLeft();
+            default:
+                return this.getAgentWalker().goRight();
+        }
     }
     
-    public void executeAction() {
-        
+    public void executeAction(PathCell prox) {
+        if(prox != null) {
+            PathCell atual = this.getAgentWalker().getPathCell();
+            this.getSimulationMap().getMap()[prox.getX()][prox.getY()].setAgentWalker(agentWalker);
+            this.getSimulationMap().getMap()[atual.getX()][atual.getY()].setAgentWalker(null);
+            agentWalker.setPathCell(prox);
+            notifyTableModelChanged();   
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ControllerSimulation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
-    public void learn() {
-        
-    }
+    public void learn() {}
     
     public int getReward() {
         switch(this.getAgentWalker().getPathCell().getType()) {
