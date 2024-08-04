@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import model.Actions;
 import model.AgentWalker;
 import model.PathCell;
 import model.SimulationMap;
@@ -38,13 +41,15 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     private double epsilonDecay;
     
     private int episode;
-
-    private double[][] qTable;
+    
+    private int lastAction;
+    private Map<String, List<Double>> qTable;
     
     public ControllerSimulation() {
         this.simulationMap = new SimulationMap();
         this.agentWalker   = new AgentWalker();
         this.observers     = new ArrayList<>();
+        this.qTable        = new HashMap<>();
         this.episode = 0;
     }
     
@@ -227,12 +232,16 @@ public class ControllerSimulation implements InterfaceControllerObserved {
 
         switch (direction) {
             case 0:
+                lastAction = Actions.UP.getValue();
                 return this.getAgentWalker().goUp();
             case 1:
+                lastAction = Actions.DOWN.getValue();
                 return this.getAgentWalker().goDown();
             case 2:
+                lastAction = Actions.LEFT.getValue();
                 return this.getAgentWalker().goLeft();
             default:
+                lastAction = Actions.RIGHT.getValue();
                 return this.getAgentWalker().goRight();
         }
     }
@@ -253,7 +262,24 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         }
     }
     
-    public void learn() {}
+    public void learn() {
+        String newState = agentWalker.getPathCell().getX() + "," + agentWalker.getPathCell().getY();
+        
+        if(qTable.get(newState).isEmpty()) {
+            List<Double> listZeros = new ArrayList<>(Collections.nCopies(4, 0.0));
+            qTable.put(newState, listZeros);
+        } 
+        
+        List<Double> actionsValues = qTable.get(newState);
+       
+        double actualQValue = actionsValues.get(lastAction);
+        double newStateBestAction = Collections.max(actionsValues);
+        double newQValue = actualQValue + learningRate*(getReward() + (discountFactor * newStateBestAction) - actualQValue); 
+        
+        actionsValues.set(lastAction, newQValue);
+                
+        qTable.put(newState, actionsValues);
+    }
     
     public int getReward() {
         switch(this.getAgentWalker().getPathCell().getType()) {
@@ -264,10 +290,6 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         }
         
         return 0;
-    }
-    
-    public void updateQTable() {
-        
     }
     
     public boolean isEndEpisode() {
