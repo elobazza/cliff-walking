@@ -208,6 +208,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
                 while(isStart()) {
                     PathCell prox = chooseAnAction();
                     executeAction(prox);
+                    learn();
                     publish(); 
                 }
                 return null;
@@ -228,21 +229,34 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     
     public PathCell chooseAnAction() {
         Random random = new Random();
-        int direction = random.nextInt(4); 
-
+        double sorted = random.nextDouble();
+        
+        int direction;
+        if(sorted > epsilon) {
+            direction = random.nextInt(4); 
+        } else {
+            String state = agentWalker.getPathCell().getX() + "," + agentWalker.getPathCell().getY();
+            List<Double> actionsValues = qTable.get(state);
+            if(actionsValues == null || actionsValues.isEmpty()) {
+                direction = random.nextInt(4); 
+            } else {
+                direction = actionsValues.indexOf(Collections.max(actionsValues));
+            }
+        }
+        
         switch (direction) {
             case 0:
-                lastAction = Actions.UP.getValue();
-                return this.getAgentWalker().goUp();
-            case 1:
-                lastAction = Actions.DOWN.getValue();
-                return this.getAgentWalker().goDown();
-            case 2:
                 lastAction = Actions.LEFT.getValue();
                 return this.getAgentWalker().goLeft();
-            default:
+            case 1:
+                lastAction = Actions.UP.getValue();
+                return this.getAgentWalker().goUp();
+            case 2:
                 lastAction = Actions.RIGHT.getValue();
                 return this.getAgentWalker().goRight();
+            default:
+                lastAction = Actions.DOWN.getValue();
+                return this.getAgentWalker().goDown();
         }
     }
     
@@ -265,7 +279,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     public void learn() {
         String newState = agentWalker.getPathCell().getX() + "," + agentWalker.getPathCell().getY();
         
-        if(qTable.get(newState).isEmpty()) {
+        if(qTable.get(newState) == null || qTable.get(newState).isEmpty()) {
             List<Double> listZeros = new ArrayList<>(Collections.nCopies(4, 0.0));
             qTable.put(newState, listZeros);
         } 
