@@ -206,9 +206,13 @@ public class ControllerSimulation implements InterfaceControllerObserved {
             @Override
             protected Void doInBackground() throws Exception {
                 while(isStart()) {
-                    PathCell prox = chooseAnAction();
-                    executeAction(prox);
-                    learn();
+                    if(isEndEpisode()) {
+                        resetEpisode();
+                    } else {
+                        PathCell prox = chooseAnAction();
+                        executeAction(prox);
+                        learn();                        
+                    }
                     publish(); 
                 }
                 return null;
@@ -232,7 +236,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         double sorted = random.nextDouble();
         
         int direction;
-        if(sorted > epsilon) {
+        if(sorted <= epsilon) {
             direction = random.nextInt(4); 
         } else {
             String state = agentWalker.getPathCell().getX() + "," + agentWalker.getPathCell().getY();
@@ -243,6 +247,9 @@ public class ControllerSimulation implements InterfaceControllerObserved {
                 direction = actionsValues.indexOf(Collections.max(actionsValues));
             }
         }
+        
+        epsilon = epsilon * epsilonDecay;
+        System.out.println("Epsilon: " + epsilon);
         
         switch (direction) {
             case 0:
@@ -269,7 +276,7 @@ public class ControllerSimulation implements InterfaceControllerObserved {
             notifyTableModelChanged();   
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(80);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ControllerSimulation.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -293,6 +300,9 @@ public class ControllerSimulation implements InterfaceControllerObserved {
         actionsValues.set(lastAction, newQValue);
                 
         qTable.put(newState, actionsValues);
+        
+        System.out.println("Q TABLE");
+        System.out.println(qTable.toString());
     }
     
     public int getReward() {
@@ -307,11 +317,11 @@ public class ControllerSimulation implements InterfaceControllerObserved {
     }
     
     public boolean isEndEpisode() {
-        return getAgentWalker().getPathCell().getType() == 2 && getAgentWalker().getPathCell().getType() == 0;
+        return getAgentWalker().getPathCell().getType() == 2 || getAgentWalker().getPathCell().getType() == 0;
     }
     
     public void resetEpisode() {
-        this.getAgentWalker().setPathCell(this.getSimulationMap().getInitial());
+        executeAction(this.getSimulationMap().getInitial());
     }
     
      public void notifyTableModel(TableModelMap tableModelMap) {

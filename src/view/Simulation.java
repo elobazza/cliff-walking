@@ -91,6 +91,12 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
         jLabel2.setText("CLIFF WALKING");
 
         tfLearningRate.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        tfLearningRate.setText("0.1");
+        tfLearningRate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfLearningRateActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel1.setText("Learning Rate");
@@ -99,13 +105,16 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
         jLabel3.setText("Discount Factor");
 
         tfDiscountFactor.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        tfDiscountFactor.setText("0.3");
 
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel4.setText("Epsilon Value");
 
         tfEpsilon.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        tfEpsilon.setText("0.7");
 
         tfDecay.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        tfDecay.setText("0.9995");
 
         jLabel5.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel5.setText("Epsilon Decay");
@@ -243,6 +252,10 @@ public class Simulation extends javax.swing.JFrame implements InterfaceViewObser
         btStop.setEnabled(false);
         btPlay.setEnabled(true);
     }//GEN-LAST:event_btPauseActionPerformed
+
+    private void tfLearningRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfLearningRateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfLearningRateActionPerformed
 
     @Override
     public void updateTableChanged() {
